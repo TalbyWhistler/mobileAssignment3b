@@ -14,7 +14,7 @@ function App() {
       {Counter()}
       {GenerateButton()}
       <div>
-          {CardGridB(deckCards,12)}
+          {CardGridB(deckCards,0)}
       </div>
     </div>
   );
@@ -29,6 +29,19 @@ for (let i=0;i<4;i++)
     {
         deckCards.push(<Card suit={i} value={j} key={`${i}-${j}`}/>);
     }
+}
+
+function resetDeckOfCards()
+{
+  deckCards = [];
+  for (let i=0;i<4;i++)
+    {
+        for (let j=1;j<=13;j++)
+        {
+            deckCards.push(<Card suit={i} value={j} key={`${i}-${j}`}/>);
+        }
+    }
+    return deckCards;
 }
 
 function moveDeckCardsToDisplayed(deckCards,displayCards)
@@ -65,8 +78,11 @@ function CardGrid(deckCards)
     return <div>{rows}</div>
 }
 
+shuffle(deckCards);
 function CardGridB(deckCards,onTheTable)
 {
+
+    
     console.log("On the table is " + onTheTable);
     const [displayed,setDisplay] = useState(onTheTable);
     let rows = [];
@@ -80,31 +96,48 @@ function CardGridB(deckCards,onTheTable)
 
     function dealFive()
     {
+       // reset();
         setDisplay(5);
     }
 
     function dealSeven()
     {
+       // reset();
         setDisplay(7);
     }
+
+    function reset()
+    {
+        deckCards = resetDeckOfCards(deckCards);
+        shuffle(deckCards);
+        setDisplay(0);
+    }
     
-    while ( cardCounter <= displayed && cardCounter <= 52)
+    
+  
+
+    while ( cardCounter < displayed && cardCounter <= 52)
     {
       for (let h=0;h<=6;h++)
       {
         for (let i=0;i<=10;i++)
           {
-            if ( cardCounter < displayed )
+            if (cardCounter>=displayed)
             {
-              let selectedCard=deckCards[cardCounter];
-              columns.push(<div className="col">{selectedCard}</div>)
-              cardCounter++;   
+              cardCounter++;
+              columns.push(<div className="col"></div>)
+              continue;
             }
             else
             {
-              cardCounter++;
-            }            
+              let selectedCard=deckCards[cardCounter];
+              columns.push(<div className="col">{selectedCard}</div>)
+              cardCounter++; 
+            }
+                
+                   
           }
+          
           rows.push(<div className="row">{columns}</div>);
           columns = [];
       }
@@ -112,6 +145,7 @@ function CardGridB(deckCards,onTheTable)
     }
     return( 
     <div>
+        <button onClick={reset}>Reset</button>
         <button onClick={dealSeven}>Deal 7</button>
         <button onClick={dealFive}>Deal 5</button>
         <button onClick={incrementCardGrid}>Test Increment Card Grid</button>
@@ -119,7 +153,20 @@ function CardGridB(deckCards,onTheTable)
     </div>);
 }
 
+function shuffle(deck) {
+  let currentIndex = deck.length;
 
+
+  while (currentIndex != 0) {
+
+
+    let randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    [deck[currentIndex], deck[randomIndex]] = [
+      deck[randomIndex], deck[currentIndex]];
+  }
+}
 
 function Rectangle({propText}) {
   const style = {
