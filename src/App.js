@@ -77,6 +77,16 @@ function CardGridB(deckCards,onTheTable)
     {
         setDisplay(displayed+1);
     }
+
+    function dealFive()
+    {
+        setDisplay(5);
+    }
+
+    function dealSeven()
+    {
+        setDisplay(7);
+    }
     
     while ( cardCounter <= displayed && cardCounter <= 52)
     {
@@ -100,7 +110,13 @@ function CardGridB(deckCards,onTheTable)
       }
         
     }
-    return <div><button onClick={incrementCardGrid}>Test Increment Card Grid</button>{rows}</div>;
+    return( 
+    <div>
+        <button onClick={dealSeven}>Deal 7</button>
+        <button onClick={dealFive}>Deal 5</button>
+        <button onClick={incrementCardGrid}>Test Increment Card Grid</button>
+        {rows}
+    </div>);
 }
 
 
