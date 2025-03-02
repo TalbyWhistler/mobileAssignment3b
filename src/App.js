@@ -12,7 +12,6 @@ function App() {
     <div className="App">
      
       {Counter()}
-      {GenerateButton()}
       <div>
           {CardGridB(deckCards,0)}
       </div>
@@ -96,13 +95,13 @@ function CardGridB(deckCards,onTheTable)
 
     function dealFive()
     {
-       // reset();
+        reset();
         setDisplay(5);
     }
 
     function dealSeven()
     {
-       // reset();
+        reset();
         setDisplay(7);
     }
 
@@ -145,10 +144,14 @@ function CardGridB(deckCards,onTheTable)
     }
     return( 
     <div>
-        <button onClick={reset}>Reset</button>
-        <button onClick={dealSeven}>Deal 7</button>
-        <button onClick={dealFive}>Deal 5</button>
-        <button onClick={incrementCardGrid}>Test Increment Card Grid</button>
+
+                  <div className="btn" onClick={incrementCardGrid}>Test Increment Card Grid</div>
+  
+        <div className="btn border border-black" onClick={reset}>Reset</div>
+        <div className="btn border border-black" onClick={dealFive}>Deal 5</div>
+        <div className="btn border border-black" onClick={dealSeven}>Deal 7</div>
+ 
+       
         {rows}
     </div>);
 }
@@ -183,18 +186,40 @@ function Rectangle({propText}) {
   );
 }
 
+function RectangleB({outputElement})
+{
+  const style = {
+    width: "75px",
+    height: "100px",
+    border: '2px solid black',
+
+
+    
+};
+
+return (
+    <div style={style}>{outputElement}</div>
+);
+}
+
 function Card({suit,value})
 {
     //const [cardState,setCardState]  = useState({suit,value});
     let valueArray=['0','A','2','3','4','5','6','7','8','9','10','J','Q','K'];
     let suitArray=['He','Di','Cl','Sp'];
+    const heart = 'https://th.bing.com/th/id/R.c52a6ca4b798e80a5519571bbab7ae41?rik=QwwUbT1WLr9JGQ&riu=http%3a%2f%2fpluspng.com%2fimg-png%2fheart-png-heart-png-image-free-download-2555.png&ehk=53syolBvFrxc8w886vqld%2fCfQwOE00Wy31ZGWcAIqVc%3d&risl=&pid=ImgRaw&r=0';
+    const diamond = 'https://images.fineartamerica.com/images/artworkimages/mediumlarge/1/diamond-deck-of-cards-custom-home-fashions.jpg';
+    const club = 'https://i.etsystatic.com/27498402/r/il/db473b/2955754533/il_1080xN.2955754533_dhwx.jpg';
+    const spade = 'https://th.bing.com/th/id/R.5c3146c279d73aab243821025e0b95a3?rik=7mfvenQk2mGN8A&pid=ImgRaw&r=0';
+    let suitImageArray=[heart,diamond,club,spade];
     suit=suit;
     value=value;
     let key=suit+value;
-    let propText= "" +valueArray[value] + " " + suitArray[suit];
+    let propText= "" +valueArray[value] + " " + suitArray[suit] + <img src={suitImageArray[suit]}></img>;
     return(
         <div> 
-        <Rectangle propText={propText}/>
+       
+          <RectangleB outputElement=<p>{valueArray[value]} <img  height="30px" src={suitImageArray[suit]} ></img> </p> />
         </div>
     );
 }
