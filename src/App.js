@@ -4,16 +4,25 @@ import { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
+const backGroundImageSrc = 'https://thumbs.dreamstime.com/b/card-table-background-6787920.jpg';
 
+const divStyle = {
+  backgroundImage: `url(${backGroundImageSrc})`,
+  backgroundSize: 'cover',
+  height: "100%",
 
+  
+}
 
 function App() {
   return (
-    <div className="App">
+    <div className="App" >
      
       {Counter()}
-      <div>
+      <div >
+          
           {CardGridB(deckCards,0)}
+        
       </div>
     </div>
   );
@@ -91,6 +100,7 @@ function CardGridB(deckCards,onTheTable)
     function incrementCardGrid()
     {
         setDisplay(displayed+1);
+        moveDeckCardsToDisplayed(deckCards,displayCards);
     }
 
     function dealFive()
@@ -145,7 +155,9 @@ function CardGridB(deckCards,onTheTable)
     return( 
     <div>
 
-                  <div className="btn" onClick={incrementCardGrid}>Test Increment Card Grid</div>
+                  <div className="btn" onClick={incrementCardGrid}>
+                    <img height="250px" width="105px" src="https://images.squarespace-cdn.com/content/v1/56ba85d9cf80a17a6f304b72/17021f49-d2e2-449f-a7c4-5d0ce8e08b7b/Card-Back.jpg"></img>
+                  </div>
   
         <div className="btn border border-black" onClick={reset}>Reset</div>
         <div className="btn border border-black" onClick={dealFive}>Deal 5</div>
@@ -186,26 +198,30 @@ function Rectangle({propText}) {
   );
 }
 
-function RectangleB({outputElement})
+
+function getCardIndex(value,suit)
 {
-  const style = {
-    width: "75px",
-    height: "100px",
-    border: '2px solid black',
-
-
-    
-};
-
-return (
-    <div style={style}>{outputElement}</div>
-);
+    let counter=0;
+    for (let i=0;i<deckCards.length-1;i++)
+    {
+        if (deckCards[i].value == value)
+        {
+            if (deckCards[i].suit == suit)
+            {
+              return i;
+            }
+        }
+        counter++;
+    }
+    return -1;
 }
 
-function Card({suit,value})
+let numberOfSelected = 0;
+
+function RectangleB({suit,value})
 {
-    //const [cardState,setCardState]  = useState({suit,value});
-    let valueArray=['0','A','2','3','4','5','6','7','8','9','10','J','Q','K'];
+
+  let valueArray=['0','A','2','3','4','5','6','7','8','9','10','J','Q','K'];
     let suitArray=['He','Di','Cl','Sp'];
     const heart = 'https://th.bing.com/th/id/R.c52a6ca4b798e80a5519571bbab7ae41?rik=QwwUbT1WLr9JGQ&riu=http%3a%2f%2fpluspng.com%2fimg-png%2fheart-png-heart-png-image-free-download-2555.png&ehk=53syolBvFrxc8w886vqld%2fCfQwOE00Wy31ZGWcAIqVc%3d&risl=&pid=ImgRaw&r=0';
     const diamond = 'https://images.fineartamerica.com/images/artworkimages/mediumlarge/1/diamond-deck-of-cards-custom-home-fashions.jpg';
@@ -214,12 +230,71 @@ function Card({suit,value})
     let suitImageArray=[heart,diamond,club,spade];
     suit=suit;
     value=value;
-    let key=suit+value;
-    let propText= "" +valueArray[value] + " " + suitArray[suit] + <img src={suitImageArray[suit]}></img>;
-    return(
-        <div> 
+  
+
+  const [selected,setSelect] = useState(false);
+  suit = suit;
+  value = value;
+  console.log(suit + " " + value);
+  
+  
+  function handleClick(e)
+  {
+      console.log(e.target)
+      if (!selected && numberOfSelected == 0)
+      {
+        setSelect(true);
+        
+        numberOfSelected++;
        
-          <RectangleB outputElement=<p>{valueArray[value]} <img  height="30px" src={suitImageArray[suit]} ></img> </p> />
+      }
+    
+      else if (selected && numberOfSelected == 1)
+      {
+        setSelect(false);
+        numberOfSelected--;
+       
+      }
+      else if (!selected && numberOfSelected == 1)
+      {
+         setSelect(false);
+       
+      }
+  }
+
+    const style = {
+      width: "75px",
+      height: "100px",
+      border: [selected ?'5px solid green': '2px solid black'],
+  }
+
+  let outputElement = <p>{valueArray[value]} <img height="30px" src={suitImageArray[suit]}></img></p>;
+
+return (
+    <div onClick={handleClick} style={style}>{outputElement}</div>
+);
+}
+
+function Card({suit,value})
+{
+    //const [cardState,setCardState]  = useState({suit,value});
+    
+    suit=suit;
+    value=value;
+    let isSelected=false;
+
+    let key=suit+value;
+    let divStyle;
+    if (isSelected)
+        divStyle = {color:'green'};
+    else
+        divStyle = {color:'black'};
+
+    //let propText= "" +valueArray[value] + " " + suitArray[suit] + <img src={suitImageArray[suit]}></img>;
+    return(
+        <div style={divStyle}> 
+       
+          <RectangleB value={value} suit={suit}  />
         </div>
     );
 }
