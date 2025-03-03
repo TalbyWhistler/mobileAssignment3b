@@ -1,3 +1,8 @@
+/**
+ * "I Stephen Tatone 000748591 certify that this material is my original work. No other person's work has been used without due acknowledgement. I have not made my work available to anyone else."
+ */
+
+
 import logo from './logo.svg';
 import './App.css';
 import { useState } from 'react';
@@ -185,6 +190,13 @@ function CardGridB(deckCards,onTheTable)
         }
     }
     
+    function wildCard() {
+       let randSuit = Math.floor(Math.random()*3);
+       let randValue = Math.floor(Math.random()*12)+1;
+       deckCards.push(<Card suit={randSuit} value={randValue} />)
+       setDisplay(displayed+1);
+    }
+
     
   // assemble the card grid
 
@@ -230,6 +242,7 @@ function CardGridB(deckCards,onTheTable)
         <div className="btn border border-black bg-primary text-white" onClick={dealFive}>Deal 5</div>
         <div className="btn border border-black bg-primary text-white" onClick={dealSeven}>Deal 7</div>
         <div className="btn border border-black bg-primary text-white" onClick={popValues}>Toss</div>
+        <div className="btn border border-black bg-primary text-white" onClick={wildCard}>Wild Card</div>
 
  
        
